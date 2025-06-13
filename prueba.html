@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Rotación automática por marcadores - Power BI</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: black;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <iframe
+    id="pbiFrame"
+    title="Inteligencia Operativa - NR"
+    src="https://app.powerbi.com/reportEmbed?reportId=690f5fc8-5dfc-420b-8880-6d2c2253e70f&autoAuth=true&ctid=e96fa72b-c8d6-4957-96bd-c7f8dc30cc88"
+    allowfullscreen="true"
+  ></iframe>
+
+  <script>
+    const iframe = document.getElementById("pbiFrame");
+
+    // Lista de marcadores EXACTOS como están en Power BI
+    const marcadores = ["Pag Principal", "Pag TAT", "Pag Subcontratado Geoquímica"];
+    let index = 0;
+
+    // Espera a que el iframe cargue
+    iframe.onload = function () {
+      console.log("📊 iframe cargado");
+      
+      // Rotar marcadores cada 30 segundos
+      setInterval(() => {
+        const marcador = marcadores[index];
+        console.log("➡️ Enviando marcador:", marcador);
+
+        const mensaje = {
+          action: "bookmark",
+          bookmarkName: marcador
+        };
+
+        iframe.contentWindow.postMessage(mensaje, "*");
+        index = (index + 1) % marcadores.length;
+      }, 10000); // cada 30 segundos
+    };
+  </script>
+</body>
+</html>
